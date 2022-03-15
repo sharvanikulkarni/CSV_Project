@@ -9,7 +9,7 @@ from datetime import datetime
 from email import header
 import re
 
-open_file = open('sitka_weather_2018_simple.csv','r')
+open_file = open('death_valley_2018_simple.csv','r')
 
 
 csv_file = csv.reader(open_file, delimiter=',')
@@ -23,6 +23,7 @@ print(type(header_row))
 for index, column_header in enumerate(header_row):
     print(index, column_header)
 
+
 highs = []
 dates = []
 lows = []
@@ -31,17 +32,27 @@ lows = []
 
 
 for row in csv_file:
-    highs.append(int(row[5]))
-    current_date = datetime.strptime(row[2], '%Y-%m-%d')
-    dates.append(current_date)
-    lows.append(int(row[6]))
+    try:
+        current_date = datetime.strptime(row[2], '%Y-%m-%d')
+        high = (int(row[4]))
+        low = (int(row[4]))
+        
+
+        
+    except ValueError:  
+        print(f"missing data for {current_date}")
+
+    else:
+        highs.append(high)
+        lows.append(low)
+        dates.append(current_date)
 
 #print(highs)
 #print(dates)
 #print(lows)
 
 import matplotlib.pyplot as plt
-'''
+
 fig = plt.figure()
 
 
@@ -57,8 +68,8 @@ plt.tick_params(axis="both", which="major", labelsize=16)
 
 fig.autofmt_xdate()
 
-#plt.show()
-'''
+plt.show()
+
 plt.subplot(2, 1, 1)
 plt.plot(dates, highs, c="red")
 plt.title("highs")
